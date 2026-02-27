@@ -82,7 +82,7 @@ interface Props {
 export default function PhysicsConstellation({ t, locale }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const nodeElemsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const nodeElemsRef = useRef<(HTMLAnchorElement | HTMLDivElement | null)[]>([]);
   const cableMainRef = useRef<(SVGPathElement | null)[]>([]);
   const cableGlowRef = useRef<(SVGPathElement | null)[]>([]);
   const pulseElemsRef = useRef<(SVGCircleElement | null)[][]>([]);
@@ -432,6 +432,9 @@ export default function PhysicsConstellation({ t, locale }: Props) {
 
   const handleNodePointerDown = useCallback(
     (e: React.PointerEvent, idx: number) => {
+      // Only capture drag events for the left mouse button (0) or touch
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+
       e.preventDefault();
       e.stopPropagation();
       (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
@@ -479,17 +482,7 @@ export default function PhysicsConstellation({ t, locale }: Props) {
       dragIdxRef.current = -1;
 
       if (dragDistRef.current < 8) {
-        const link = links[idx];
-        if (link.isDownload) {
-          const a = document.createElement('a');
-          a.href = link.url;
-          a.download = '';
-          a.click();
-        } else if (link.url.startsWith('mailto:')) {
-          window.location.href = link.url;
-        } else {
-          window.open(link.url, '_blank', 'noopener,noreferrer');
-        }
+        // We removed programmatic window.open because we're using Native <a> functionality now!
       }
     };
 
@@ -586,7 +579,7 @@ export default function PhysicsConstellation({ t, locale }: Props) {
         {/* Positioning wrapper: top-1/2 + left-1/2 places the top-left at center,
             -translate-x-1/2 centers horizontally, -translate-y-[72px] shifts up
             by exactly half the image height so the image center = viewport center */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[72px]">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[72px] pointer-events-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.4 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -630,10 +623,14 @@ export default function PhysicsConstellation({ t, locale }: Props) {
           const Icon = iconMap[link.icon];
           const linkData = t.links[link.id as keyof typeof t.links];
           return (
-            <div
+            <a
+              href={link.url}
+              target={link.url.startsWith('mailto:') || link.isDownload ? undefined : '_blank'}
+              rel={link.url.startsWith('mailto:') || link.isDownload ? undefined : 'noopener noreferrer'}
+              download={link.isDownload ? '' : undefined}
               key={link.id}
               ref={(el) => { nodeElemsRef.current[i] = el; }}
-              className="absolute top-0 left-0 z-30 cursor-grab active:cursor-grabbing"
+              className="absolute top-0 left-0 z-30 cursor-grab active:cursor-grabbing block"
               style={{
                 touchAction: 'none',
                 willChange: 'transform',
@@ -645,6 +642,11 @@ export default function PhysicsConstellation({ t, locale }: Props) {
               onPointerEnter={() => handlePointerEnter(i)}
               onPointerLeave={() => handlePointerLeave(i)}
               onDoubleClick={() => handleDoubleClick(i)}
+              onClick={(e) => {
+                if (dragDistRef.current >= 8) {
+                  e.preventDefault(); // Prevent navigation if we dragged
+                }
+              }}
             >
               <div className="group relative flex flex-col items-center gap-3">
                 <div className="absolute -inset-5 rounded-full bg-gradient-to-br from-zinc-300/20 to-zinc-400/20 dark:from-zinc-800/20 dark:to-zinc-700/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -658,7 +660,7 @@ export default function PhysicsConstellation({ t, locale }: Props) {
                   {linkData.label}
                 </span>
               </div>
-            </div>
+            </a>
           );
         })}
 

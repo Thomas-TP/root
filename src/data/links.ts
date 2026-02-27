@@ -18,7 +18,7 @@ export const links: LinkItem[] = [
   },
   {
     id: 'portfolio',
-    url: 'https://thomastp.me/',
+    url: 'https://thomastp.ch/',
     icon: 'globe',
   },
   {
