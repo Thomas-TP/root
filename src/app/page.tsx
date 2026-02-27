@@ -6,9 +6,10 @@ import { useLocale } from '@/i18n/useLocale';
 import Starfield from '@/components/Starfield';
 import PhysicsConstellation from '@/components/PhysicsConstellation';
 import MobileLayout from '@/components/MobileLayout';
+import FloatingControls from '@/components/FloatingControls';
 
 export default function Home() {
-  const { t, locale } = useLocale();
+  const { t, locale, setLocale } = useLocale();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -28,6 +29,8 @@ export default function Home() {
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       >
         <Starfield />
+
+        <FloatingControls currentLocale={locale} onLocaleChange={setLocale} />
 
         {/* Desktop: physics constellation */}
         <div className="hidden md:block">

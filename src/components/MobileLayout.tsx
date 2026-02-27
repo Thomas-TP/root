@@ -73,11 +73,25 @@ export default function MobileLayout({ t, locale }: MobileLayoutProps) {
       </motion.div>
 
       {/* ── Link cards ── */}
-      <div className="w-full max-w-sm flex flex-col gap-3">
+      <motion.div
+        className="w-full max-w-sm flex flex-col gap-3"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.1,
+              delayChildren: 0.3,
+            }
+          }
+        }}
+      >
         {links.map((link, i) => (
           <LinkNode key={link.id} link={link} t={t} index={i} variant="card" />
         ))}
-      </div>
+      </motion.div>
 
       {/* ── GitHub stats ── */}
       <motion.div

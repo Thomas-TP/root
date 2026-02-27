@@ -57,9 +57,10 @@ export default function LinkNode({ link, t, index, variant = 'orbit' }: LinkNode
       rel={link.isDownload ? undefined : 'noopener noreferrer'}
       download={link.isDownload || undefined}
       className="group relative block"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3 + index * 0.1, type: 'spring', stiffness: 100 }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+      }}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
     >
