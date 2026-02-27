@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-space-deep: #000000;
+  --color-space-white: #ffffff;
+  --color-accent-purple: #a1a1aa;
+  --color-accent-cyan: #d4d4d8;
+  --color-accent-pink: #e4e4e7;
+  --font-heading: var(--font-outfit), 'Outfit', system-ui, sans-serif;
+  --font-body: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+}
+
+/* ── Keyframes ── */
+
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-counter-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Custom utilities ── */
+
+@utility animate-orbit {
+  animation: orbit-rotate 90s linear infinite;
+  will-change: transform;
+}
+
+@utility animate-counter-orbit {
+  animation: orbit-counter-rotate 90s linear infinite;
+  will-change: transform;
+}
+
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@utility animate-shimmer {
+  animation: shimmer 3s linear infinite;
+  background-size: 200% auto;
+}
+
+/* ── Orbit pause on hover ── */
+
+.orbit-area:hover .animate-orbit,
+.orbit-area:hover .animate-counter-orbit {
+  animation-play-state: paused;
+}
+
+/* ── Base styles ── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+  overflow-x: hidden;
+  background-color: #FEFEFE;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #030014;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 4px;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(124, 58, 237, 0.3);
+  color: inherit;
+}
