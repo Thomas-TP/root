@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-space-deep: #000000;
@@ -82,9 +83,13 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-  body {
+  html:not(.light) body {
     background-color: #030014;
   }
+}
+
+html.dark body {
+  background-color: #030014;
 }
 
 /* Scrollbar */

@@ -18,8 +18,13 @@ export default function FloatingControls({ currentLocale, onLocaleChange }: Floa
         const savedTheme = localStorage.getItem('theme-preference') as 'light' | 'dark' | null;
         if (savedTheme) {
             setTheme(savedTheme);
-            if (savedTheme === 'light') document.documentElement.classList.remove('dark');
-            else document.documentElement.classList.add('dark');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            } else {
+                document.documentElement.classList.remove('light');
+                document.documentElement.classList.add('dark');
+            }
         } else {
             // Default to what tailwind/css uses (system preference)
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -34,9 +39,11 @@ export default function FloatingControls({ currentLocale, onLocaleChange }: Floa
         setTheme(newTheme);
         localStorage.setItem('theme-preference', newTheme);
         if (newTheme === 'dark') {
+            document.documentElement.classList.remove('light');
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
         }
     };
 
