@@ -98,7 +98,7 @@ export default function FloatingControls({ currentLocale, onLocaleChange }: Floa
                         {/* Language Toggle */}
                         <motion.button
                             onClick={toggleLocale}
-                            className="w-10 h-10 rounded-full bg-white/80 dark:bg-white/10 backdrop-blur-xl border border-gray-200/60 dark:border-white/10 shadow-lg flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors font-heading text-sm font-bold uppercase"
+                            className="w-10 h-10 rounded-full bg-white/80 dark:bg-white/10 backdrop-blur-xl border border-gray-200/60 dark:border-white/10 shadow-lg flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors font-heading text-sm font-medium uppercase"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             title="Change Language"
